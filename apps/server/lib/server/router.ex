@@ -8,7 +8,20 @@ defmodule Server.Router do
   scope "/api", Server do
     pipe_through :api
 
-    get "/places/", PlacesController, :get_places
+    resources "/places", PlacesController, only: [:index, :show, :create, :update, :delete]
+
+    resources "/places/availability/", AvailabilityController, only: [:show, :create, :update, :delete]
+
+    resources "/bookings", PlacesController, only: [:index, :show, :create, :update, :delete]
+    #get "/bookings/:booking_id", PlacesController, :get_places
+
+    resources "/users", AvailabilityController, only: [:show, :create, :update, :delete]
+
+    resources "/companies", AvailabilityController, only: [:show, :create, :update, :delete]
+
+    resources "/plans", PlacesController, only: [:index, :show, :create, :update, :delete]
+
+    resources "/ratings", PlacesController, only: [:index, :show, :create, :update, :delete]
   end
 
   # Enables LiveDashboard only for development
