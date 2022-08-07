@@ -1,10 +1,5 @@
-defmodule Server.PlacesController do
+defmodule Server.AvailabilityController  do
   use Server, :controller
-
-  def index(conn, opts) do
-    body = Server.Integrations.Places.get_places("country like this")
-    conn |> put_status(200) |> json(body)
-  end
 
   def show(conn, opts) do
     conn |> put_status(200) |> json(%{})
