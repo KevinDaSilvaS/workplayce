@@ -9,6 +9,9 @@ defmodule Server.Router do
     pipe_through :api
 
     resources "/places", PlacesController, only: [:index, :show, :create, :update, :delete]
+    # ROUTES/MAIN RULES - OK - DONE
+    # TODO - [] better error messages
+    #        [] add auth header validation
 
     resources "/places/availability/", AvailabilityController, only: [:show, :create, :update, :delete]
 
