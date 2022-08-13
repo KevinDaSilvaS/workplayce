@@ -1,34 +1,30 @@
 defmodule Places.Repository.Places do
-  def list_places(_filters) do
-    [
-      %{
-        city: "Frankfurt",
-        country: "Germany",
-        address: "laker street 451",
-        place_id: "123456",
-        description: "view to the fukushima mountain office",
-        links: ["flickrwithofficephotos"]
-      },
-      %{
-        city: "Rio de Janeiro",
-        country: "Brazil",
-        address: "laker street 451",
-        place_id: "123456",
-        description: "view to the copacabana beach mountain office",
-        links: ["flickrwithofficephotos"]
-      },
-      %{
-        city: "Buenos Aires",
-        country: "Argentina",
-        address: "laker street 451",
-        place_id: "123456",
-        description: "confortable office with free food",
-        links: ["flickrwithofficephotos"]
-      }
-    ]
+
+  def list_places(filters, opts) do
+    Mongo.find(Mongo.Places, "places", filters, opts)
+          |> Enum.to_list()
+          |> Enum.map(fn place ->
+            Map.put(place, "_id", BSON.ObjectId.encode!(place["_id"]))
+          end)
   end
 
   def insert_place(place) do
-    place
+    {:ok, insertedOneResult} = Mongo.insert_one(Mongo.Places, "places", place)
+
+    %{"inserted_id" => BSON.ObjectId.encode!(insertedOneResult.inserted_id)}
+  end
+
+  def get_one_place(place_id) do
+    place_id = BSON.ObjectId.decode!(place_id)
+    place = Mongo.find_one(Mongo.Places, "places", %{"_id" => place_id})
+    Map.put(place, "_id", BSON.ObjectId.encode!(place["_id"]))
+  end
+
+  def update_place(place_id, updated_place) do
+
+  end
+
+  def delete_place(place_id) do
+
   end
 end
