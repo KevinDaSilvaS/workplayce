@@ -16,7 +16,10 @@ defmodule Server.PlacesController do
 
   def show(conn, opts) do
     place = Server.Integrations.Places.get_place(opts["id"])
-    conn |> put_status(200) |> json(place)
+    case place do
+      nil -> conn |> put_status(404) |> json(%{error: "Resource not found"})
+      _ -> conn |> put_status(200) |> json(place)
+    end
   end
 
   def create(conn, opts) do
@@ -37,8 +40,9 @@ defmodule Server.PlacesController do
 
     case request_body do
       {:ok, request_body} ->
-        body = Server.Integrations.Places.update_place(request_body)
-        case body do
+        result = Server.Integrations.Places.update_place(request_body)
+
+        case result do
           {:error, err} -> conn |> put_status(400) |> json(%{error: err})
           _ -> conn |> put_status(200) |> json(%{})
         end
@@ -49,6 +53,11 @@ defmodule Server.PlacesController do
   end
 
   def delete(conn, opts) do
-    conn |> put_status(200) |> json(%{})
+    result = Server.Integrations.Places.delete_place(opts["id"])
+
+    case result do
+      {:error, err} -> conn |> put_status(400) |> json(%{error: err})
+      _ -> conn |> put_status(200) |> json(%{})
+    end
   end
 end

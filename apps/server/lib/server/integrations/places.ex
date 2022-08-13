@@ -15,4 +15,8 @@ defmodule Server.Integrations.Places do
     {id, place} = Map.pop(place_data, "id")
     Places.Repository.Places.update_place(place, id)
   end
+
+  def delete_place(id) do
+    Places.Repository.Places.delete_place(id)
+  end
 end

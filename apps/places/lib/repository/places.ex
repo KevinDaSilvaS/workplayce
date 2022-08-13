@@ -16,13 +16,16 @@ defmodule Places.Repository.Places do
   def get_one_place(place_id) do
     place_id = BSON.ObjectId.decode!(place_id)
     place = Mongo.find_one(Mongo.Places, "places", %{"_id" => place_id})
-    Map.put(place, "_id", BSON.ObjectId.encode!(place["_id"]))
+    case place do
+      nil -> nil
+      _ -> Map.put(place, "_id", BSON.ObjectId.encode!(place["_id"]))
+    end
   end
 
   def update_place(replace_data, place_id) do
     place_id = BSON.ObjectId.decode!(place_id)
 
-    place = Mongo.find_one_and_update(
+    Mongo.find_one_and_update(
       Mongo.Places,
       "places",
       %{"_id" => place_id},
@@ -30,5 +33,11 @@ defmodule Places.Repository.Places do
   end
 
   def delete_place(place_id) do
+    place_id = BSON.ObjectId.decode!(place_id)
+
+    Mongo.find_one_and_delete(
+      Mongo.Places,
+      "places",
+      %{"_id" => place_id})
   end
 end
