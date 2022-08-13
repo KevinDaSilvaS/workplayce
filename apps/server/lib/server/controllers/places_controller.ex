@@ -33,7 +33,19 @@ defmodule Server.PlacesController do
   end
 
   def update(conn, opts) do
-    conn |> put_status(200) |> json(%{})
+    request_body = Server.Mappers.Places.validate_update_fields(opts)
+
+    case request_body do
+      {:ok, request_body} ->
+        body = Server.Integrations.Places.update_place(request_body)
+        case body do
+          {:error, err} -> conn |> put_status(400) |> json(%{error: err})
+          _ -> conn |> put_status(200) |> json(%{})
+        end
+
+      {:error, err} ->
+        conn |> put_status(400) |> json(%{error: err})
+    end
   end
 
   def delete(conn, opts) do

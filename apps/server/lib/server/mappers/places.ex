@@ -38,4 +38,32 @@ defmodule Server.Mappers.Places do
 
     Litmus.validate(fields, schema)
   end
+
+  def validate_update_fields(fields) do
+    schema = %{
+      "id" => %Litmus.Type.String{
+        required: true
+      },
+      "address" => %Litmus.Type.String{
+        required: false
+      },
+      "city" => %Litmus.Type.String{
+        required: false
+      },
+      "country" => %Litmus.Type.String{
+        required: false
+      },
+      "description" => %Litmus.Type.String{
+        required: false
+      },
+      "links" => %Litmus.Type.List{
+        type: :string
+      },
+      "tags" => %Litmus.Type.List{
+        type: :string
+      }
+    }
+
+    Litmus.validate(fields, schema)
+  end
 end
