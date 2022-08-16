@@ -13,14 +13,6 @@ defmodule Server.Mappers.Companies do
       },
       "password" => %Litmus.Type.String{
         required: true
-      },
-      "max_offices" => %Litmus.Type.Number{
-        required: true,
-        default: 1
-      },
-      "confirmed_email" => %Litmus.Type.Bool{
-        required: true,
-        default: 1
       }
     }
 
@@ -45,12 +37,10 @@ defmodule Server.Mappers.Companies do
         required: false
       },
       "max_offices" => %Litmus.Type.Number{
-        required: false,
-        default: 1
+        required: false
       },
-      "confirmed_email" => %Litmus.Type.Bool{
-        required: false,
-        default: 1
+      "confirmed_email" => %Litmus.Type.Boolean{
+        required: false
       }
     }
 
