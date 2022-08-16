@@ -44,7 +44,9 @@ defmodule Server.PlacesController do
 
         case result do
           {:error, err} -> conn |> put_status(400) |> json(%{error: err})
-          _ -> conn |> put_status(200) |> json(%{})
+          _ -> conn
+            |> put_resp_header("content-type", "application/json")
+            |> send_resp(204, "")
         end
 
       {:error, err} ->
@@ -57,7 +59,9 @@ defmodule Server.PlacesController do
 
     case result do
       {:error, err} -> conn |> put_status(400) |> json(%{error: err})
-      _ -> conn |> put_status(200) |> json(%{})
+      _ -> conn
+        |> put_resp_header("content-type", "application/json")
+        |> send_resp(204, "")
     end
   end
 end

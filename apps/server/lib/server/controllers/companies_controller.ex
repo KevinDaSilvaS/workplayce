@@ -1,11 +1,11 @@
-defmodule Server.Controllers.CompaniesController do
+defmodule Server.CompaniesController do
   use Server, :controller
-
+  @resource_name "Company"
   def show(conn, opts) do
     company = Server.Integrations.Companies.get_company(opts["id"])
 
     case company do
-      nil -> conn |> put_status(404) |> json(%{error: "Resource not found"})
+      nil -> conn |> put_status(404) |> json(%{error: "#{@resource_name} resource not found"})
       _ -> conn |> put_status(200) |> json(company)
     end
   end
@@ -15,6 +15,9 @@ defmodule Server.Controllers.CompaniesController do
 
     case request_body do
       {:ok, request_body} ->
+        request_body = Map.put_new(request_body, "max_offices", 1)
+        request_body = Map.put_new(request_body, "confirmed_email", false)
+
         body = Server.Integrations.Companies.insert_company(request_body)
         conn |> put_status(201) |> json(body)
 
@@ -32,7 +35,9 @@ defmodule Server.Controllers.CompaniesController do
 
         case result do
           {:error, err} -> conn |> put_status(400) |> json(%{error: err})
-          _ -> conn |> put_status(200) |> json(%{})
+          _ -> conn
+            |> put_resp_header("content-type", "application/json")
+            |> send_resp(204, "")
         end
 
       {:error, err} ->
@@ -45,7 +50,9 @@ defmodule Server.Controllers.CompaniesController do
 
     case result do
       {:error, err} -> conn |> put_status(400) |> json(%{error: err})
-      _ -> conn |> put_status(200) |> json(%{})
+      _ -> conn
+        |> put_resp_header("content-type", "application/json")
+        |> send_resp(204, "")
     end
   end
 end
