@@ -1,34 +1,21 @@
 defmodule Server.Controllers.CompaniesController do
   use Server, :controller
 
-  def index(conn, opts) do
-    {limit, page} = Server.Helpers.Pagination.set(opts)
-    filters = Server.Mappers.Places.map_filters(opts)
-
-    body =
-      Server.Integrations.Places.get_places(filters,
-        limit: limit,
-        skip: (page - 1) * limit
-      )
-
-    conn |> put_status(200) |> json(body)
-  end
-
   def show(conn, opts) do
-    place = Server.Integrations.Places.get_place(opts["id"])
+    company = Server.Integrations.Companies.get_company(opts["id"])
 
-    case place do
+    case company do
       nil -> conn |> put_status(404) |> json(%{error: "Resource not found"})
-      _ -> conn |> put_status(200) |> json(place)
+      _ -> conn |> put_status(200) |> json(company)
     end
   end
 
   def create(conn, opts) do
-    request_body = Server.Mappers.Places.validate_fields(opts)
+    request_body = Server.Mappers.Companies.validate_fields(opts)
 
     case request_body do
       {:ok, request_body} ->
-        body = Server.Integrations.Places.insert_place(request_body)
+        body = Server.Integrations.Companies.insert_company(request_body)
         conn |> put_status(201) |> json(body)
 
       {:error, err} ->
@@ -37,11 +24,11 @@ defmodule Server.Controllers.CompaniesController do
   end
 
   def update(conn, opts) do
-    request_body = Server.Mappers.Places.validate_update_fields(opts)
+    request_body = Server.Mappers.Companies.validate_update_fields(opts)
 
     case request_body do
       {:ok, request_body} ->
-        result = Server.Integrations.Places.update_place(request_body)
+        result = Server.Integrations.Companies.update_company(request_body)
 
         case result do
           {:error, err} -> conn |> put_status(400) |> json(%{error: err})
@@ -54,7 +41,7 @@ defmodule Server.Controllers.CompaniesController do
   end
 
   def delete(conn, opts) do
-    result = Server.Integrations.Places.delete_place(opts["id"])
+    result = Server.Integrations.Companies.delete_company(opts["id"])
 
     case result do
       {:error, err} -> conn |> put_status(400) |> json(%{error: err})
