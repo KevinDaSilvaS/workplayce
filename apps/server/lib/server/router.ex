@@ -12,6 +12,7 @@ defmodule Server.Router do
     # ROUTES/MAIN RULES - OK - DONE
     # TODO - [] better error messages
     #        [] add auth header validation
+    #        [] validate if max_offices == total offices before inserting a new
 
     resources "/places/availability/", AvailabilityController, only: [:show, :create, :update, :delete]
 
@@ -20,7 +21,7 @@ defmodule Server.Router do
 
     resources "/users", AvailabilityController, only: [:show, :create, :update, :delete]
 
-    resources "/companies", AvailabilityController, only: [:show, :create, :update, :delete]
+    resources "/companies", CompaniesController, only: [:show, :create, :update, :delete]
 
     resources "/plans", PlacesController, only: [:index, :show, :create, :update, :delete]
 
