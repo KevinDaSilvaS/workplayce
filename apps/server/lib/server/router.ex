@@ -20,6 +20,9 @@ defmodule Server.Router do
     #get "/bookings/:booking_id", PlacesController, :get_places
 
     resources "/users", UsersController, only: [:show, :create, :update, :delete]
+    # ROUTES/MAIN RULES - OK - DONE
+    # TODO - [] better error messages
+    #        [] add auth header validation?
 
     resources "/companies", CompaniesController, only: [:show, :create, :update, :delete]
     # ROUTES/MAIN RULES - OK - DONE
