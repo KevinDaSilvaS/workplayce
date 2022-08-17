@@ -1,16 +1,4 @@
 defmodule Server.Mappers.Users do
-  def map_filters(filters) do
-    fields = ["username", "description", "email", "password"]
-
-    Enum.reduce(fields, %{}, fn field, acc ->
-      value = Map.get(filters, field)
-      case value do
-        nil -> acc
-        _   -> Map.put_new(acc, field, value)
-      end
-    end)
-  end
-
   def validate_fields(fields) do
     schema = %{
       "username" => %Litmus.Type.String{

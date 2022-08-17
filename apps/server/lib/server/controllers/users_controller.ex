@@ -2,19 +2,6 @@ defmodule Server.UsersController do
   use Server, :controller
   @resource_name "User"
 
-  def index(conn, opts) do
-    {limit, page} = Server.Helpers.Pagination.set(opts)
-    filters = Server.Mappers.Users.map_filters(opts)
-
-    body =
-      Server.Integrations.Users.get_users(filters,
-        limit: limit,
-        skip: (page - 1) * limit
-      )
-
-    conn |> put_status(200) |> json(body)
-  end
-
   def show(conn, opts) do
     user = Server.Integrations.Users.get_user(opts["id"])
 
