@@ -19,7 +19,7 @@ defmodule Server.Router do
     resources "/bookings", PlacesController, only: [:index, :show, :create, :update, :delete]
     #get "/bookings/:booking_id", PlacesController, :get_places
 
-    resources "/users", AvailabilityController, only: [:show, :create, :update, :delete]
+    resources "/users", UsersController, only: [:show, :create, :update, :delete]
 
     resources "/companies", CompaniesController, only: [:show, :create, :update, :delete]
     # ROUTES/MAIN RULES - OK - DONE
