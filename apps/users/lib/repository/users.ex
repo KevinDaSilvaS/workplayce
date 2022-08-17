@@ -13,9 +13,16 @@ defmodule Users.Repository.Users do
     %{"inserted_id" => BSON.ObjectId.encode!(insertedOneResult.inserted_id)}
   end
 
-  def get_one_user(user_id) do
+  def get_one_user(%{"_id" => user_id}) do
     user_id = BSON.ObjectId.decode!(user_id)
     user = Mongo.find_one(Mongo.Users, "users", %{"_id" => user_id})
+    case user do
+      nil -> nil
+      _ -> Map.put(user, "_id", BSON.ObjectId.encode!(user["_id"]))
+    end
+  end
+  def get_one_user(user_email) do
+    user = Mongo.find_one(Mongo.Users, "users", user_email)
     case user do
       nil -> nil
       _ -> Map.put(user, "_id", BSON.ObjectId.encode!(user["_id"]))
@@ -29,7 +36,7 @@ defmodule Users.Repository.Users do
       Mongo.Users,
       "users",
       %{"_id" => user_id},
-      %{"$set": reuser_data})
+      %{"$set": replace_data})
   end
 
   def delete_user(user_id) do
