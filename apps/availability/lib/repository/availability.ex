@@ -1,11 +1,4 @@
 defmodule Availability.Repository.Availability do
-  def list_availabilities(filters, opts) do
-    Mongo.find(Mongo.Availability, "availability", filters, opts)
-    |> Enum.to_list()
-    |> Enum.map(fn availability ->
-      Map.put(availability, "_id", BSON.ObjectId.encode!(availability["_id"]))
-    end)
-  end
 
   def insert_availability(availability) do
     {:ok, insertedOneResult} = Mongo.insert_one(Mongo.Availability, "availability", availability)
@@ -13,7 +6,7 @@ defmodule Availability.Repository.Availability do
     %{"inserted_id" => BSON.ObjectId.encode!(insertedOneResult.inserted_id)}
   end
 
-  def get_one_availability(availability_id) do
+  def get_availability(availability_id) do
     availability_id = BSON.ObjectId.decode!(availability_id)
     availability = Mongo.find_one(Mongo.Availability, "availability", %{"_id" => availability_id})
     case availability do
