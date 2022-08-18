@@ -15,6 +15,10 @@ defmodule Server.Router do
     #        [] validate if max_offices == total offices before inserting a new
 
     resources "/places/availability/", AvailabilityController, only: [:show, :create, :update, :delete]
+    # ROUTES/MAIN RULES - OK - DONE
+    # TODO - [] better error messages
+    #        [] validate place exists before creating availability
+    #        [] add auth header validation?
 
     resources "/bookings", PlacesController, only: [:index, :show, :create, :update, :delete]
     #get "/bookings/:booking_id", PlacesController, :get_places
