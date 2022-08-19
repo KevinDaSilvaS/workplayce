@@ -20,8 +20,13 @@ defmodule Server.Router do
     #        [] validate place exists before creating availability
     #        [] add auth header validation?
 
-    resources "/bookings", PlacesController, only: [:index, :show, :create, :update, :delete]
-    #get "/bookings/:booking_id", PlacesController, :get_places
+    resources "/bookings", BookingsController, only: [:show, :create, :update, :delete]
+    # ROUTES/MAIN RULES - OK - DONE
+    # TODO - [] better error messages
+    #        [] validate availability/day exists before creating booking
+    #        [] add auth header validation?
+    #        [] if approved and max capacity reached update availability removing day from availability
+    #        [] add security code on approval
 
     resources "/users", UsersController, only: [:show, :create, :update, :delete]
     # ROUTES/MAIN RULES - OK - DONE
