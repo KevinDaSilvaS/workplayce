@@ -1,5 +1,9 @@
 defmodule Server.Mappers.Users do
   def validate_fields(fields) do
+    password = Map.get(fields, "password")
+        |> Server.Services.HashPasswords.hash_password()
+    fields = Map.put(fields, "password", password)
+
     schema = %{
       "username" => %Litmus.Type.String{
         required: true
@@ -19,6 +23,10 @@ defmodule Server.Mappers.Users do
   end
 
   def validate_update_fields(fields) do
+    password = Map.get(fields, "password")
+        |> Server.Services.HashPasswords.hash_password()
+    fields = Map.put(fields, "password", password)
+
     schema = %{
       "id" => %Litmus.Type.String{
         required: true
