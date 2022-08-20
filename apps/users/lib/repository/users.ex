@@ -29,6 +29,17 @@ defmodule Users.Repository.Users do
     end
   end
 
+  def login(email, password) do
+    user = Mongo.find_one(Mongo.Users, "users", %{
+      "email" => email,
+      "password" => password
+    })
+    case user do
+      nil -> nil
+      _ -> Map.put(user, "_id", BSON.ObjectId.encode!(user["_id"]))
+    end
+  end
+
   def update_user(replace_data, user_id) do
     user_id = BSON.ObjectId.decode!(user_id)
 

@@ -38,7 +38,9 @@ defmodule Server.Router do
     # TODO - [] better error messages
     #        [] add auth header validation
 
-    post "/auth/login", AuthController, :login
+    post "/users/auth/login", AuthController, :login_user
+
+    post "/companies/auth/login", AuthController, :login_company
 
     resources "/plans", PlacesController, only: [:index, :show, :create, :update, :delete]
 

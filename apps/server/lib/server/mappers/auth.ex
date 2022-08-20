@@ -1,14 +1,27 @@
 defmodule Server.Mappers.Auth do
+  def validate_fields_login(fields) do
+    IO.inspect(fields)
+
+    user = Map.has_key?(fields, "user_id")
+    company = Map.has_key?(fields, "company_id")
+
+    case {user, company} do
+      {false, false} -> {:error, "type not supported, or set"}
+      {true, _} -> {:ok, Map.put_new(fields, "type", "USER")}
+      {_, true} -> {:ok, Map.put_new(fields, "type", "COMPANY")}
+    end
+  end
+
   def validate_fields(fields) do
-    type = %{
-      "COMPANY" => "COMPANY",
-      "USER" => "USER"
+    schema = %{
+      "email" => %Litmus.Type.String{
+        required: true
+      },
+      "password" => %Litmus.Type.String{
+        required: true
+      }
     }
 
-    valid = Map.get(type, Map.get(fields, "type", nil), nil)
-    case valid do
-      nil -> {:error, "type not supported, or set"}
-      _ -> {:ok, fields}
-    end
+    Litmus.validate(fields, schema)
   end
 end

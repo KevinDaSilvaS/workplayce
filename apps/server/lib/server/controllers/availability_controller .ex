@@ -2,11 +2,42 @@ defmodule Server.AvailabilityController  do
   use Server, :controller
   @resource_name "Availability"
 
+  #plug :authenticate
+
   def show(conn, opts) do
     availability = Server.Integrations.Availability.get_availability(opts["id"])
     case availability do
       nil -> conn |> put_status(404) |> json(%{error: "#{@resource_name} resource not found"})
       _ -> conn |> put_status(200) |> json(availability)
+    end
+  end
+
+  defp needs_auth?(conn) do
+    methods = %{"POST" => true, "PUT" => true, "PATCH" => true}
+    Map.get(methods, conn.method, false)
+  end
+
+  defp authenticate(conn, _) do
+    case needs_auth?(conn) do
+      true ->
+        auth_token = Plug.Conn.get_req_header(conn, "auth-token")
+                |> Enum.at(0)
+        found_token = Server.Integrations.Auth.get_auth(auth_token)
+        logged_in = Server.Services.LoggedIn.logged_in?(found_token)
+        is_company = Server.Services.LoggedIn.is_company?(found_token)
+        is_equal = true#Server.Integrations.Companies.get_company(
+          #Map.get(found_token, "_id")) != nil
+        is_authenticated = logged_in && is_company && is_equal
+
+        case is_authenticated do
+          true -> conn
+          _ -> conn
+            |> put_status(401)
+            |> json(%{error: "Not authenticated"})
+            |> halt()
+        end
+      _ ->
+        conn
     end
   end
 

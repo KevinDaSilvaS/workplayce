@@ -8,7 +8,7 @@ defmodule Auth.Repository.Auth do
 
   def get_auth(auth_id) do
     auth_id = BSON.ObjectId.decode!(auth_id)
-    auth = Mongo.find_one(Mongo.auth, "auth", %{"_id" => auth_id})
+    auth = Mongo.find_one(Mongo.Auth, "auth", %{"_id" => auth_id})
     case auth do
       nil -> nil
       _ -> Map.put(auth, "_id", BSON.ObjectId.encode!(auth["_id"]))

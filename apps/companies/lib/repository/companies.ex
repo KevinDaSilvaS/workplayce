@@ -13,9 +13,27 @@ defmodule Companies.Repository.Companies do
     %{"inserted_id" => BSON.ObjectId.encode!(insertedOneResult.inserted_id)}
   end
 
+  def get_one_company(%{"email" => company_email}) do
+    company = Mongo.find_one(Mongo.Companies, "companies", company_email)
+    case company do
+      nil -> nil
+      _ -> Map.put(company, "_id", BSON.ObjectId.encode!(company["_id"]))
+    end
+  end
   def get_one_company(company_id) do
     company_id = BSON.ObjectId.decode!(company_id)
     company = Mongo.find_one(Mongo.Companies, "companies", %{"_id" => company_id})
+    case company do
+      nil -> nil
+      _ -> Map.put(company, "_id", BSON.ObjectId.encode!(company["_id"]))
+    end
+  end
+
+  def login(email, password) do
+    company = Mongo.find_one(Mongo.Companies, "companies", %{
+      "email" => email,
+      "password" => password
+    })
     case company do
       nil -> nil
       _ -> Map.put(company, "_id", BSON.ObjectId.encode!(company["_id"]))

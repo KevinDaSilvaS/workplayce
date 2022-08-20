@@ -15,7 +15,7 @@ defmodule Auth.Application do
        auth_source: "admin",
        auth_mecanism: "SCRAM-SHA-1",
        name: Mongo.Auth]},
-      {Expiration.Setter, 120}
+      {Auth.Index.Setter, 120}
       # Starts a worker by calling: Auth.Worker.start_link(arg)
       # {Auth.Worker, arg}
     ]

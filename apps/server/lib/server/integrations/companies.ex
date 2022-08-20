@@ -3,12 +3,13 @@ defmodule Server.Integrations.Companies do
     Companies.Repository.Companies.list_companies(filters, opts)
   end
 
+  def get_company(nil), do: nil
   def get_company(id) do
     Companies.Repository.Companies.get_one_company(id)
   end
 
   def login(email, password) do
-    Users.Repository.Users.login(email, password)
+    Companies.Repository.Companies.login(email, password)
   end
 
   def insert_company(company) do
