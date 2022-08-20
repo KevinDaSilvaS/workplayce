@@ -15,11 +15,23 @@ defmodule Server.CompaniesController do
 
     case request_body do
       {:ok, request_body} ->
-        request_body = Map.put_new(request_body, "max_offices", 1)
-        request_body = Map.put_new(request_body, "confirmed_email", false)
+        email = Map.get(request_body, "email")
+        companyAlreadyExists = Server.Services.CompanyExists.company_exists?(%{
+          "email" => email
+        })
 
-        body = Server.Integrations.Companies.insert_company(request_body)
-        conn |> put_status(201) |> json(body)
+        case companyAlreadyExists do
+          true ->
+              conn |> put_status(400) |> json(%{
+                error: "#{@resource_name} already inserted for email: #{email}"
+              })
+
+          _ ->
+              request_body = Map.put_new(request_body, "max_offices", 1)
+              request_body = Map.put_new(request_body, "confirmed_email", false)
+              body = Server.Integrations.Companies.insert_company(request_body)
+              conn |> put_status(201) |> json(body)
+        end
 
       {:error, err} ->
         conn |> put_status(400) |> json(%{error: err})

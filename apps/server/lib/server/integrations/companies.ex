@@ -7,6 +7,10 @@ defmodule Server.Integrations.Companies do
     Companies.Repository.Companies.get_one_company(id)
   end
 
+  def login(email, password) do
+    Users.Repository.Users.login(email, password)
+  end
+
   def insert_company(company) do
     Companies.Repository.Companies.insert_company(company)
   end
