@@ -25,7 +25,6 @@ defmodule Server.Router do
     # TODO - [] better error messages
     #        [] validate availability/day exists before creating booking
     #        [] add auth header validation?
-    #        [] if approved and max capacity reached update availability removing day from availability
     #        [] add security code on approval
 
     resources "/users", UsersController, only: [:show, :create, :update, :delete]
