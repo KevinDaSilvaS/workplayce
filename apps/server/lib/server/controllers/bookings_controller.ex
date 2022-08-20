@@ -32,7 +32,33 @@ defmodule Server.BookingsController  do
 
         case result do
           {:error, err} -> conn |> put_status(400) |> json(%{error: err})
-          _ -> conn
+          {:ok, result} ->
+            day = Map.get(result, "day")
+            availability_id = Map.get(result, "availability_id")
+
+            {:ok, total} = Server.Integrations.Bookings.total_bookings(%{
+              "availability_id" => availability_id,
+              "approved" => true
+              })
+
+            availability = Server.Integrations.Availability.get_availability(availability_id)
+            max_spots = Map.get(availability, "available_spots")
+
+            if total >= max_spots do
+              days_available = Map.get(availability, "days_available")
+              updated_available_days = Enum.filter(days_available,
+                  fn available_day ->
+                    available_day != day
+                  end)
+
+              payload = %{
+                "id" => availability_id,
+                "days_available" => updated_available_days
+              }
+              Server.Integrations.Availability.update_availability(payload)
+            end
+
+            conn
             |> put_resp_header("content-type", "application/json")
             |> send_resp(204, "")
         end

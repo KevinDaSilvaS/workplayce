@@ -1,5 +1,9 @@
 defmodule Server.Integrations.Bookings do
 
+  def total_bookings(query) do
+    Bookings.Repository.Bookings.total_bookings(query)
+  end
+
   def get_booking(id) do
     Bookings.Repository.Bookings.get_one_booking(id)
   end

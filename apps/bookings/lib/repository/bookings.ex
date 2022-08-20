@@ -1,4 +1,8 @@
 defmodule Bookings.Repository.Bookings do
+  def total_bookings(filters) do
+    Mongo.count_documents(Mongo.Companies, "bookings", filters)
+  end
+
   def insert_booking(booking) do
     {:ok, insertedOneResult} = Mongo.insert_one(Mongo.Bookings, "bookings", booking)
 

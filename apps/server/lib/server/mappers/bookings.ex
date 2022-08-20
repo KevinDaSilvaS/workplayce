@@ -13,7 +13,10 @@ defmodule Server.Mappers.Bookings do
       },
       "month" => %Litmus.Type.Number{
         required: true
-      }
+      },
+      "availability_id" => %Litmus.Type.String{
+        required: true
+      },
     }
 
     Litmus.validate(fields, schema)

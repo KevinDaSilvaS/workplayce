@@ -31,9 +31,6 @@ defmodule Server.Mappers.Availability do
         required: false,
         type: :number
       },
-      "place_id" => %Litmus.Type.String{
-        required: false
-      },
       "month_number" => %Litmus.Type.Number{
         required: false
       },
