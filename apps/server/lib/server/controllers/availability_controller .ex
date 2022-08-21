@@ -2,7 +2,7 @@ defmodule Server.AvailabilityController  do
   use Server, :controller
   @resource_name "Availability"
 
-  #plug :authenticate
+  plug :authenticate
 
   def show(conn, opts) do
     availability = Server.Integrations.Availability.get_availability(opts["id"])
@@ -13,7 +13,7 @@ defmodule Server.AvailabilityController  do
   end
 
   defp needs_auth?(conn) do
-    methods = %{"POST" => true, "PUT" => true, "PATCH" => true}
+    methods = %{"POST" => true, "PUT" => true, "PATCH" => true, "DELETE" => true}
     Map.get(methods, conn.method, false)
   end
 
@@ -22,12 +22,12 @@ defmodule Server.AvailabilityController  do
       true ->
         auth_token = Plug.Conn.get_req_header(conn, "auth-token")
                 |> Enum.at(0)
-        found_token = Server.Integrations.Auth.get_auth(auth_token)
+        found_token = Server.Integrations.Auth.get_auth(auth_token) || %{}
         logged_in = Server.Services.LoggedIn.logged_in?(found_token)
         is_company = Server.Services.LoggedIn.is_company?(found_token)
-        is_equal = true#Server.Integrations.Companies.get_company(
-          #Map.get(found_token, "_id")) != nil
-        is_authenticated = logged_in && is_company && is_equal
+        exists_in_db = Server.Integrations.Companies.get_company(
+          Map.get(found_token, "company_id")) != nil
+        is_authenticated = logged_in && is_company && exists_in_db
 
         case is_authenticated do
           true -> conn

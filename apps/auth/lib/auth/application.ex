@@ -8,14 +8,7 @@ defmodule Auth.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      {Mongo,
-       [url: "mongodb://172.17.0.3:27017/admin",
-       username: "user",
-       password: "12345",
-       auth_source: "admin",
-       auth_mecanism: "SCRAM-SHA-1",
-       name: Mongo.Auth]},
-      {Auth.Index.Setter, 120}
+      {Auth.Repository.Auth, []}
       # Starts a worker by calling: Auth.Worker.start_link(arg)
       # {Auth.Worker, arg}
     ]

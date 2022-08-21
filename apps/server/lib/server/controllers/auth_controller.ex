@@ -25,8 +25,13 @@ defmodule Server.AuthController do
 
         case user do
           nil -> conn |> put_status(404) |> json(%{error: "user resource not found"})
-          _ -> body = Server.Integrations.Auth.insert_auth(request_body)
-               conn |> put_status(201) |> json(body)
+          _ ->
+              payload = %{
+                "user_id" => Map.get(user, "_id"),
+                "type" => "USER"
+              }
+              body = Server.Integrations.Auth.insert_auth(payload)
+              conn |> put_status(201) |> json(body)
         end
 
       {:error, err} ->
@@ -41,7 +46,6 @@ defmodule Server.AuthController do
       {:ok, request_body} ->
         email = Map.get(request_body, "email")
         password = Map.get(request_body, "password")
-        IO.inspect(password)
         company = Server.Integrations.Companies.login(email, password)
 
         case company do

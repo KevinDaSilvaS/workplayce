@@ -3,6 +3,7 @@ defmodule Server.Integrations.Users do
     Users.Repository.Users.list_users(filters, opts)
   end
 
+  def get_user(nil), do: false
   def get_user(value, field \\"_id") do
     query = Map.new() |> Map.put_new(field, value)
     Users.Repository.Users.get_one_user(query)

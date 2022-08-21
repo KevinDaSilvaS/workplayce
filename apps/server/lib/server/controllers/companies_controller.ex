@@ -1,6 +1,8 @@
 defmodule Server.CompaniesController do
   use Server, :controller
   @resource_name "Company"
+  plug :authenticate
+
   def show(conn, opts) do
     company = Server.Integrations.Companies.get_company(opts["id"])
 
@@ -65,6 +67,35 @@ defmodule Server.CompaniesController do
       _ -> conn
         |> put_resp_header("content-type", "application/json")
         |> send_resp(204, "")
+    end
+  end
+
+  defp needs_auth?(conn) do
+    methods = %{"PUT" => true, "PATCH" => true, "DELETE" => true}
+    Map.get(methods, conn.method, false)
+  end
+
+  defp authenticate(conn, _) do
+    case needs_auth?(conn) do
+      true ->
+        auth_token = Plug.Conn.get_req_header(conn, "auth-token")
+                |> Enum.at(0)
+        found_token = Server.Integrations.Auth.get_auth(auth_token) || %{}
+        logged_in = Server.Services.LoggedIn.logged_in?(found_token)
+        is_company = Server.Services.LoggedIn.is_company?(found_token)
+        exists_in_db = Server.Integrations.Companies.get_company(
+          Map.get(found_token, "company_id")) != nil
+        is_authenticated = logged_in && is_company && exists_in_db
+
+        case is_authenticated do
+          true -> conn
+          _ -> conn
+            |> put_status(401)
+            |> json(%{error: "Not authenticated"})
+            |> halt()
+        end
+      _ ->
+        conn
     end
   end
 end

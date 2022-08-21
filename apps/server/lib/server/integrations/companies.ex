@@ -3,7 +3,7 @@ defmodule Server.Integrations.Companies do
     Companies.Repository.Companies.list_companies(filters, opts)
   end
 
-  def get_company(nil), do: nil
+  def get_company(nil), do: false
   def get_company(id) do
     Companies.Repository.Companies.get_one_company(id)
   end
