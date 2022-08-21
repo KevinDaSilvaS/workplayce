@@ -11,31 +11,25 @@ defmodule Server.Router do
     resources "/places", PlacesController, only: [:index, :show, :create, :update, :delete]
     # ROUTES/MAIN RULES - OK - DONE
     # TODO - [] better error messages
-    #        [] add auth header validation
     #        [] validate if max_offices == total offices before inserting a new
 
     resources "/places/availability/", AvailabilityController, only: [:show, :create, :update, :delete]
     # ROUTES/MAIN RULES - OK - DONE
     # TODO - [] better error messages
     #        [] validate place exists before creating availability
-    #        [] add auth header validation?
 
     resources "/bookings", BookingsController, only: [:show, :create, :update, :delete]
     # ROUTES/MAIN RULES - OK - DONE
     # TODO - [] better error messages
     #        [] validate availability/day exists before creating booking
-    #        [] add auth header validation?
-    #        [] add security code on approval
 
     resources "/users", UsersController, only: [:show, :create, :update, :delete]
     # ROUTES/MAIN RULES - OK - DONE
     # TODO - [] better error messages
-    #        [] add auth header validation?
 
     resources "/companies", CompaniesController, only: [:show, :create, :update, :delete]
     # ROUTES/MAIN RULES - OK - DONE
     # TODO - [] better error messages
-    #        [] add auth header validation
 
     post "/users/auth/login", AuthController, :login_user
 

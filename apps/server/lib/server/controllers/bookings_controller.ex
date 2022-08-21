@@ -28,6 +28,7 @@ defmodule Server.BookingsController  do
 
     case request_body do
       {:ok, request_body} ->
+        request_body = Map.put(request_body, "validation_code", :crypto.strong_rand_bytes(10) |> Base.encode64())
         result = Server.Integrations.Bookings.update_booking(request_body)
 
         case result do
