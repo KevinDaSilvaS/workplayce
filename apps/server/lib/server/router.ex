@@ -35,9 +35,9 @@ defmodule Server.Router do
 
     post "/companies/auth/login", AuthController, :login_company
 
-    resources "/plans", PlacesController, only: [:index, :show, :create, :update, :delete]
+    #resources "/plans", PlacesController, only: [:index, :show, :create, :update, :delete]
 
-    resources "/ratings", PlacesController, only: [:index, :show, :create, :update, :delete]
+    #resources "/ratings", PlacesController, only: [:index, :show, :create, :update, :delete]
   end
 
   # Enables LiveDashboard only for development
