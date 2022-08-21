@@ -90,10 +90,6 @@ defmodule Server.UsersController do
           Map.get(found_token, "user_id")) != nil
         is_authenticated = logged_in && is_user && exists_in_db
 
-        IO.inspect(found_token)
-        IO.inspect(is_user)
-        IO.inspect(exists_in_db)
-
         case is_authenticated do
           true -> conn
           _ -> conn
