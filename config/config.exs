@@ -17,7 +17,12 @@ config :server, Server.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: Server.ErrorView, accepts: ~w(json), layout: false],
   pubsub_server: Server.PubSub,
-  live_view: [signing_salt: "YL7syv0k"]
+  live_view: [signing_salt: "YL7syv0k"],
+  host:     System.get_env("MONGODB_HOST")     || "172.17.0.3",
+  user:     System.get_env("MONGODB_USER")     || "user",
+  password: System.get_env("MONGODB_PASSWORD") || "12345",
+  port:     System.get_env("MONGODB_PORT") || "27017",
+  db:       System.get_env("MONGODB_NAME") || "admin"
 
 # Sample configuration:
 #

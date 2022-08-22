@@ -5,16 +5,25 @@ defmodule Bookings.Application do
 
   use Application
 
+  @config Application.fetch_env!(:server, Server.Endpoint)
+  @username Keyword.get(@config, :user)
+  @password Keyword.get(@config, :password)
+  @host Keyword.get(@config, :host)
+  @port Keyword.get(@config, :port)
+  @db Keyword.get(@config, :db)
+
   @impl true
   def start(_type, _args) do
     children = [
       {Mongo,
-       [url: "mongodb://172.17.0.3:27017/admin",
-       username: "user",
-       password: "12345",
-       auth_source: "admin",
-       auth_mecanism: "SCRAM-SHA-1",
-       name: Mongo.Bookings]}
+       [
+         url: "mongodb://#{@host}:#{@port}/#{@db}",
+         username: @username,
+         password: @password,
+         auth_source: "admin",
+         auth_mecanism: "SCRAM-SHA-1",
+         name: Mongo.Bookings
+       ]}
       # Starts a worker by calling: Bookings.Worker.start_link(arg)
       # {Bookings.Worker, arg}
     ]
