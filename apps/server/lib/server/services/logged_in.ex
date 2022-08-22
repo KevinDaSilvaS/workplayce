@@ -1,6 +1,6 @@
 defmodule Server.Services.LoggedIn do
   def logged_in?(nil), do: false
-  def logged_in?(token), do: true
+  def logged_in?(_token), do: true
 
   def is_company?(nil), do: false
   def is_company?(token) do
