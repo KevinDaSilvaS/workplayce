@@ -1,6 +1,6 @@
 defmodule Auth.Repository.Auth do
   @table :auth
-  @default_ttl 60
+  @default_ttl 259200 #60
 
   use Agent
 
