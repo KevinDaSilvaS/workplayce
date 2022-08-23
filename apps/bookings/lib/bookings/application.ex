@@ -17,7 +17,8 @@ defmodule Bookings.Application do
     children = [
       {Mongo,
        [
-         url: "mongodb://#{@host}:#{@port}/#{@db}",
+         url: "mongodb+srv://#{@host}/#{@db}?retryWrites=true&w=majority",
+         #url: "mongodb://#{@host}:#{@port}/#{@db}",
          username: @username,
          password: @password,
          auth_source: "admin",
