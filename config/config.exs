@@ -18,9 +18,9 @@ config :server, Server.Endpoint,
   render_errors: [view: Server.ErrorView, accepts: ~w(json), layout: false],
   pubsub_server: Server.PubSub,
   live_view: [signing_salt: "YL7syv0k"],
-  host:     System.get_env("MONGODB_HOST")     || "workplayce.lzpqoun.mongodb.net",
-  user:     System.get_env("MONGODB_USER")     || "db_user",
-  password: System.get_env("MONGODB_PASSWORD") || "4JPmYRjDlDeYwR16",
+  host:     System.get_env("MONGODB_HOST")     || "172.17.0.3",
+  user:     System.get_env("MONGODB_USER")     || "user",
+  password: System.get_env("MONGODB_PASSWORD") || "12345",
   port:     System.get_env("MONGODB_PORT") || "27017",
   db:       System.get_env("MONGODB_NAME") || "workplayce"
 
