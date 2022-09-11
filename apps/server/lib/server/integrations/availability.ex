@@ -16,4 +16,8 @@ defmodule Server.Integrations.Availability do
   def delete_availability(id) do
     Availability.Repository.Availability.delete_availability(id)
   end
+
+  def list_availabilities(month, place_id) do
+    Availability.Repository.Availability.list_availabilities(month, place_id)
+  end
 end

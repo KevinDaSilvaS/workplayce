@@ -15,14 +15,28 @@ defmodule Availability.Repository.Availability do
     end
   end
 
-  def update_availability(reavailability_data, availability_id) do
+  def list_availabilities(month, place_id) do
+    Mongo.find(Mongo.Availability,
+      "availability",
+      %{
+        "month_number" => String.to_integer(month),
+        "year" => Date.utc_today().year,
+        "place_id" => place_id
+      })
+    |> Enum.to_list()
+    |> Enum.map(fn company ->
+      Map.put(company, "_id", BSON.ObjectId.encode!(company["_id"]))
+    end)
+  end
+
+  def update_availability(replace_data, availability_id) do
     availability_id = BSON.ObjectId.decode!(availability_id)
 
     Mongo.find_one_and_update(
       Mongo.Availability,
       "availability",
       %{"_id" => availability_id},
-      %{"$set": reavailability_data})
+      %{"$set": replace_data})
   end
 
   def delete_availability(availability_id) do

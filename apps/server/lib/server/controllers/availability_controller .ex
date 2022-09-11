@@ -12,6 +12,11 @@ defmodule Server.AvailabilityController  do
     end
   end
 
+  def list_availabilities(conn, opts) do
+    availabilities = Server.Integrations.Availability.list_availabilities(opts["month"], opts["place_id"])
+    conn |> put_status(200) |> json(availabilities)
+  end
+
   defp needs_auth?(conn) do
     methods = %{"POST" => true, "PUT" => true, "PATCH" => true, "DELETE" => true}
     Map.get(methods, conn.method, false)
@@ -47,6 +52,7 @@ defmodule Server.AvailabilityController  do
     case request_body do
       {:ok, request_body} ->
         request_body = Map.put_new(request_body, "price", 0)
+        request_body = Map.put_new(request_body, "year", Date.utc_today().year )
         body = Server.Integrations.Availability.insert_availability(request_body)
         conn |> put_status(201) |> json(body)
 

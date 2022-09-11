@@ -14,6 +14,7 @@ defmodule Server.Router do
     #        [] validate if max_offices == total offices before inserting a new
 
     resources "/places/availability/", AvailabilityController, only: [:show, :create, :update, :delete]
+    get "/places/availability/:month/:place_id", AvailabilityController, :list_availabilities
     # ROUTES/MAIN RULES - OK - DONE
     # TODO - [] better error messages
     #        [] validate place exists before creating availability
