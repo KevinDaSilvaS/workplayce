@@ -6,7 +6,7 @@ defmodule Availability.Repository.Availability do
     %{"inserted_id" => BSON.ObjectId.encode!(insertedOneResult.inserted_id)}
   end
 
-  def get_availability(availability_id) do
+  def get_availability(%{"_id" => availability_id}) do
     availability_id = BSON.ObjectId.decode!(availability_id)
     availability = Mongo.find_one(Mongo.Availability, "availability", %{"_id" => availability_id})
     case availability do
@@ -14,19 +14,12 @@ defmodule Availability.Repository.Availability do
       _ -> Map.put(availability, "_id", BSON.ObjectId.encode!(availability["_id"]))
     end
   end
-
-  def list_availabilities(month, place_id) do
-    Mongo.find(Mongo.Availability,
-      "availability",
-      %{
-        "month_number" => String.to_integer(month),
-        "year" => Date.utc_today().year,
-        "place_id" => place_id
-      })
-    |> Enum.to_list()
-    |> Enum.map(fn company ->
-      Map.put(company, "_id", BSON.ObjectId.encode!(company["_id"]))
-    end)
+  def get_availability(query) do
+    availability = Mongo.find_one(Mongo.Availability, "availability", query)
+    case availability do
+      nil -> nil
+      _ -> Map.put(availability, "_id", BSON.ObjectId.encode!(availability["_id"]))
+    end
   end
 
   def update_availability(replace_data, availability_id) do

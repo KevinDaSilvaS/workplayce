@@ -5,16 +5,23 @@ defmodule Server.AvailabilityController  do
   plug :authenticate
 
   def show(conn, opts) do
-    availability = Server.Integrations.Availability.get_availability(opts["id"])
+    availability = Server.Integrations.Availability.get_availability(%{"_id" => opts["id"]})
     case availability do
       nil -> conn |> put_status(404) |> json(%{error: "#{@resource_name} resource not found"})
       _ -> conn |> put_status(200) |> json(availability)
     end
   end
 
-  def list_availabilities(conn, opts) do
-    availabilities = Server.Integrations.Availability.list_availabilities(opts["month"], opts["place_id"])
-    conn |> put_status(200) |> json(availabilities)
+  def get_availability(conn, opts) do
+    availability = Server.Integrations.Availability.get_availability(%{
+      "month_number" => String.to_integer(opts["month"]),
+      "year" => Date.utc_today().year,
+      "place_id" => opts["place_id"]
+    })
+    case availability do
+      nil -> conn |> put_status(404) |> json(%{error: "#{@resource_name} resource not found"})
+      _ -> conn |> put_status(200) |> json(availability)
+    end
   end
 
   defp needs_auth?(conn) do

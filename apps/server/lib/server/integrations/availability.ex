@@ -1,7 +1,7 @@
 defmodule Server.Integrations.Availability do
 
-  def get_availability(id) do
-    Availability.Repository.Availability.get_availability(id)
+  def get_availability(query) do
+    Availability.Repository.Availability.get_availability(query)
   end
 
   def insert_availability(availability) do
@@ -15,9 +15,5 @@ defmodule Server.Integrations.Availability do
 
   def delete_availability(id) do
     Availability.Repository.Availability.delete_availability(id)
-  end
-
-  def list_availabilities(month, place_id) do
-    Availability.Repository.Availability.list_availabilities(month, place_id)
   end
 end
