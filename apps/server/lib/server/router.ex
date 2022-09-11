@@ -35,6 +35,8 @@ defmodule Server.Router do
 
     post "/companies/auth/login", AuthController, :login_company
 
+    get "/auth/", AuthController, :get_token_info
+
     #resources "/plans", PlacesController, only: [:index, :show, :create, :update, :delete]
 
     #resources "/ratings", PlacesController, only: [:index, :show, :create, :update, :delete]

@@ -63,4 +63,15 @@ defmodule Server.AuthController do
         conn |> put_status(400) |> json(%{error: err})
     end
   end
+
+  def get_token_info(conn, opts) do
+    auth_token = Plug.Conn.get_req_header(conn, "auth-token") |> Enum.at(0)
+
+    found_token = Server.Integrations.Auth.get_auth(auth_token)
+
+    case found_token do
+      nil -> conn |> put_status(404) |> json(%{error: "No info found with token: #{auth_token}"})
+      _ -> conn |> put_status(200) |> json(found_token)
+    end
+  end
 end
