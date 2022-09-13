@@ -1,7 +1,7 @@
 defmodule Server.Endpoint do
   use Phoenix.Endpoint, otp_app: :server
 
-  plug CORSPlug, origin: ["*"]
+  plug CORSPlug, origin: ["*"], headers: ["*"]
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
