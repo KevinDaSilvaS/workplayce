@@ -1,6 +1,6 @@
 defmodule Server.PlacesController do
   use Server, :controller
-  @resource_name "User"
+  @resource_name "Place"
   plug :authenticate
 
   def index(conn, opts) do
@@ -22,6 +22,16 @@ defmodule Server.PlacesController do
       nil -> conn |> put_status(404) |> json(%{error: "#{@resource_name} resource not found"})
       _ -> conn |> put_status(200) |> json(place)
     end
+  end
+
+  def get_company_places(conn, opts) do
+    {limit, page} = Server.Helpers.Pagination.set(opts)
+    places = Server.Integrations.Places.get_places(%{
+      "company_id" => opts["company_id"]
+      },
+      limit: limit,
+      skip: (page - 1) * limit)
+    conn |> put_status(200) |> json(places)
   end
 
   def create(conn, opts) do

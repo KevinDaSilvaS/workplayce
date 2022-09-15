@@ -9,6 +9,7 @@ defmodule Server.Router do
     pipe_through :api
 
     resources "/places", PlacesController, only: [:index, :show, :create, :update, :delete]
+    get "/places/list/:company_id", PlacesController, :get_company_places
     # ROUTES/MAIN RULES - OK - DONE
     # TODO - [] better error messages
     #        [] validate if max_offices == total offices before inserting a new
