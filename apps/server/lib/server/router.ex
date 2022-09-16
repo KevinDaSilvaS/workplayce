@@ -21,6 +21,8 @@ defmodule Server.Router do
     #        [] validate place exists before creating availability
 
     resources "/bookings", BookingsController, only: [:show, :create, :update, :delete]
+    get "/bookings/companies/:company_id", BookingsController, :get_company_bookings
+    get "/bookings/users/:user_id", BookingsController, :get_user_bookings
     # ROUTES/MAIN RULES - OK - DONE
     # TODO - [] better error messages
     #        [] validate availability/day exists before creating booking

@@ -18,6 +18,14 @@ defmodule Bookings.Repository.Bookings do
     end
   end
 
+  def list_bookings(filters, opts) do
+    Mongo.find(Mongo.Bookings, "bookings", filters, opts)
+    |> Enum.to_list()
+    |> Enum.map(fn booking ->
+      Map.put(booking, "_id", BSON.ObjectId.encode!(booking["_id"]))
+    end)
+  end
+
   def update_booking(replace_data, booking_id) do
     booking_id = BSON.ObjectId.decode!(booking_id)
 

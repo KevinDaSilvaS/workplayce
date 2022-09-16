@@ -8,6 +8,10 @@ defmodule Server.Integrations.Bookings do
     Bookings.Repository.Bookings.get_one_booking(id)
   end
 
+  def get_bookings(filters, opts) do
+    Bookings.Repository.Bookings.list_bookings(filters, opts)
+  end
+
   def insert_booking(booking) do
     Bookings.Repository.Bookings.insert_booking(booking)
   end

@@ -10,6 +10,32 @@ defmodule Server.BookingsController  do
     end
   end
 
+  def get_company_bookings(conn, opts) do
+    {limit, page} = Server.Helpers.Pagination.set(opts)
+    body =
+      Server.Integrations.Bookings.get_bookings(%{
+        "company_id" => opts["company_id"]
+        },
+        limit: limit,
+        skip: (page - 1) * limit
+      )
+
+    conn |> put_status(200) |> json(body)
+  end
+
+  def get_user_bookings(conn, opts) do
+    {limit, page} = Server.Helpers.Pagination.set(opts)
+    body =
+      Server.Integrations.Bookings.get_bookings(%{
+        "user_id" => opts["user_id"]
+        },
+        limit: limit,
+        skip: (page - 1) * limit
+      )
+
+    conn |> put_status(200) |> json(body)
+  end
+
   def create(conn, opts) do
     request_body = Server.Mappers.Bookings.validate_fields(opts)
 

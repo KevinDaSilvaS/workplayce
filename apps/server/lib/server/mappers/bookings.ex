@@ -8,6 +8,9 @@ defmodule Server.Mappers.Bookings do
       "place_id" => %Litmus.Type.String{
         required: true
       },
+      "company_id" => %Litmus.Type.String{
+        required: true
+      },
       "day" => %Litmus.Type.Number{
         required: true
       },
