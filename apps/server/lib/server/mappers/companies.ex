@@ -23,10 +23,14 @@ defmodule Server.Mappers.Companies do
     Litmus.validate(fields, schema)
   end
 
+  def set_password(nil, fields), do: fields
+  def set_password(password, fields) do
+    password = Server.Services.HashPasswords.hash_password(password)
+    Map.put(fields, "password", password)
+  end
+
   def validate_update_fields(fields) do
-    password = Map.get(fields, "password")
-        |> Server.Services.HashPasswords.hash_password()
-    fields = Map.put(fields, "password", password)
+    fields = Map.get(fields, "password") |> set_password(fields)
 
     schema = %{
       "id" => %Litmus.Type.String{
