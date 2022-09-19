@@ -68,8 +68,8 @@ defmodule Server.BookingsController  do
               "approved" => true
               })
 
-            availability = Server.Integrations.Availability.get_availability(availability_id)
-            max_spots = Map.get(availability, "available_spots")
+            availability = Server.Integrations.Availability.get_availability(%{"_id" => availability_id}) || %{"available_spots" => 0, "days_available" => []}
+            max_spots = Map.get(availability, "available_spots", 0)
 
             if total >= max_spots do
               days_available = Map.get(availability, "days_available")
