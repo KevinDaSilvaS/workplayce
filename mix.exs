@@ -4,20 +4,13 @@ defmodule Src.MixProject do
   def project do
     [
       apps_path: "apps",
-      version: "0.1.0",
+      version: "0.1.2",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      version: "0.0.1",
-      elixir: "~> 1.14",
+      elixir: "~> 1.13.3",
       releases: [
         src: [
           applications: [
-            auth: :permanent,
-            availability: :permanent,
-            bookings: :permanent,
-            companies: :permanent,
-            places: :permanent,
-            users: :permanent,
             server: :permanent
           ]
         ]

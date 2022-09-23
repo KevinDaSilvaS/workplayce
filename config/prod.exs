@@ -10,7 +10,7 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :server, Server.Endpoint,
-  url: [host: "workplayce.fly.dev/", port: 80],
+  url: [host: "localhost", port: 4000],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # ## SSL Support
@@ -20,7 +20,7 @@ config :server, Server.Endpoint,
 #
 #     config :server, Server.Endpoint,
 #       ...,
-#       url: [host: "example.com", port: 443],
+#       url: [host: "localhost", port: 443],
 #       https: [
 #         ...,
 #         port: 443,
