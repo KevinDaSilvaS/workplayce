@@ -22,7 +22,7 @@ WORKDIR /app
 
 RUN MIX_ENV=prod mix release
 
-FROM elixir as final
+FROM debian as final
 
 EXPOSE 4000
 ENV PORT=4000 
@@ -33,7 +33,7 @@ WORKDIR /app
 
 COPY --from=releaser app/_build/prod/rel/src .
 
-COPY --from=releaser app/ .
+#COPY --from=releaser app/ .
 
 #WORKDIR /app/releases/0.1.0
 
