@@ -10,8 +10,12 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :server, Server.Endpoint,
-  url: [host: "localhost", port: 4000],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  http: [ip: {0, 0, 0, 0}, port: 4000],
+  url: [port: 4000],
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  server: true,
+  root: ".",
+  version: "0.1.0"
 
 # ## SSL Support
 #

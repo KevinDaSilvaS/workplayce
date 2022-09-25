@@ -11,7 +11,13 @@ defmodule Src.MixProject do
       releases: [
         src: [
           applications: [
-            server: :permanent
+            server: :permanent,
+            places: :permanent,
+            auth: :permanent,
+            availability: :permanent,
+            bookings: :permanent,
+            companies: :permanent,
+            users: :permanent
           ]
         ]
       ]
