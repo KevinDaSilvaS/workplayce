@@ -1,13 +1,29 @@
-FROM elixir
+FROM elixir as releaser
 
-COPY ./ .
+WORKDIR /app
 
 EXPOSE 4000
 
-RUN mix local.hex --force
+ENV PORT=4000 
+ENV MIX_ENV=prod 
 
-RUN mix deps.get
+ENV SECRET_KEY_BASE=123
+
+COPY ./apps ./apps
+COPY ./config ./config
+COPY ./mix.exs .
+COPY ./.formatter.exs .
+
+RUN mix local.hex --force
 
 RUN mix local.rebar --force
 
-CMD mix phx.server
+RUN mix deps.get
+
+RUN MIX_ENV=prod mix compile
+
+RUN MIX_ENV=prod mix release
+
+CMD _build/prod/rel/src/bin/src start
+
+#CMD echo "$(ls)"

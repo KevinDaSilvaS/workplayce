@@ -9,6 +9,24 @@
 # move said applications out of the umbrella.
 import Config
 
+config :auth,
+  app: "auth"
+
+config :places,
+  app: "places"
+
+config :availability,
+  app: "availability"
+
+config :bookings,
+  app: "bookings"
+
+config :companies,
+  app: "companies"
+
+config :users,
+  app: "users"
+
 config :server,
   generators: [context_app: false]
 
