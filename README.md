@@ -4,6 +4,7 @@
 Rest api made with phoenix, mongodb, ETS, Elixir releases, and litmus
 
 The project is composed of sub apps following an umbrella architecture  
+```
       ,.!.,  
    .'-     -'.  
  .'    app    '.  
@@ -17,5 +18,7 @@ The project is composed of sub apps following an umbrella architecture
         |> users
         |> server
         O lc
+```
+
 
 
